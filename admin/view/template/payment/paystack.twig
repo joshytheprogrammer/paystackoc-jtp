@@ -1,0 +1,200 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="float-end">
+				<button type="submit" form="form-pp-std-uk" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-save"></i></button> 
+				<a href="{{ cancel }}" data-bs-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ol class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %} 
+				<li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %} 
+			</ol>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %} 
+		<div class="alert alert-danger"><i class="fa-solid fa-circle-exclamation"></i> {{ error_warning }}
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+		{% endif %} 
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"><i class="fa-solid fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="card-body">
+				<p>{{ text_set_webhook }}</p>
+				<p style="color:red;"><strong>{{ webhook_url }}</strong></p>
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-pp-std-uk" class="form-horizontal">
+					<ul class="nav nav-tabs">
+						<li class="nav-item"><a href="#tab-general" data-bs-toggle="tab" class="nav-link active">{{ tab_general }}</a></li>
+						<li class="nav-item"><a href="#tab-status" data-bs-toggle="tab" class="nav-link">{{ tab_order_status }}</a></li>
+					</ul>
+					<div class="tab-content pt-3">
+						<div class="tab-pane fade show active" id="tab-general">
+							<div class="mb-3 row required">
+								<label class="col-sm-2 col-form-label" for="entry-test-secret">{{ entry_test_secret }}</label> 
+								<div class="col-sm-10">
+									<input type="text" name="payment_paystack_test_secret" value="{{ payment_paystack_test_secret }}" placeholder="{{ entry_test_secret }}" id="entry-test-secret" class="form-control" />
+									{% if not payment_paystack_live and error_keys %}
+									<div class="text-danger">{{ error_keys }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="mb-3 row required">
+								<label class="col-sm-2 col-form-label" for="entry-test-public">{{ entry_test_public }}</label> 
+								<div class="col-sm-10">
+									<input type="text" name="payment_paystack_test_public" value="{{ payment_paystack_test_public }}" placeholder="{{ entry_test_public }}" id="entry-test-public" class="form-control" />
+									{% if not payment_paystack_live and error_keys %}
+									<div class="text-danger">{{ error_keys }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-live-demo"><span data-bs-toggle="tooltip" title="{{ help_live }}">{{ entry_live }}</span></label> 
+								<div class="col-sm-10">
+									<select name="payment_paystack_live" id="input-live-demo" class="form-select">
+										<option value="1" {{ payment_paystack_live ? 'selected="selected"':'' }}> {{ text_yes }}</option>
+										<option value="0" {{ payment_paystack_live ? '':'selected="selected"' }}> {{ text_no }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="entry-live-secret">{{ entry_live_secret }}</label> 
+								<div class="col-sm-10">
+									<input type="text" name="payment_paystack_live_secret" value="{{ payment_paystack_live_secret }}" placeholder="{{ entry_live_secret }}" id="entry-live-secret" class="form-control" />
+									{% if payment_paystack_live and error_keys %}
+									<div class="text-danger">{{ error_keys }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="entry-live-public">{{ entry_live_public }}</label> 
+								<div class="col-sm-10">
+									<input type="text" name="payment_paystack_live_public" value="{{ payment_paystack_live_public }}" placeholder="{{ entry_live_public }}" id="entry-live-public" class="form-control" />
+									{% if payment_paystack_live and error_keys %}
+									<div class="text-danger">{{ error_keys }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-debug"><span data-bs-toggle="tooltip" title="{{ help_debug }}">{{ entry_debug }}</span></label> 
+								<div class="col-sm-10">
+									<select name="payment_paystack_debug" id="input-debug" class="form-select">
+										{% if payment_paystack_debug %}
+										<option value="1" selected="selected">{{ text_enabled }}</option>
+										<option value="0">{{ text_disabled }}</option>
+										{% else %}
+										<option value="1">{{ text_enabled }}</option>
+										<option value="0" selected="selected">{{ text_disabled }}</option>
+										{% endif %}
+									</select>
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-total"><span data-bs-toggle="tooltip" title="{{ help_total }}">{{ entry_total }}</span></label> 
+								<div class="col-sm-10">
+									<input type="text" name="payment_paystack_total" value="{{ payment_paystack_total }}" placeholder="{{ entry_total }}" id="input-total" class="form-control" />
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-sort-order">{{ entry_sort_order }}</label> 
+								<div class="col-sm-10">
+									<input type="text" name="payment_paystack_sort_order" value="{{ payment_paystack_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-geo-zone">{{ entry_geo_zone }}</label> 
+								<div class="col-sm-10">
+									<select name="payment_paystack_geo_zone_id" id="input-geo-zone" class="form-select">
+										<option value="0">{{ text_all_zones }}</option>
+										{% for geo_zone in geo_zones %}
+											<option value="{{ geo_zone.geo_zone_id }}"{% if geo_zone.geo_zone_id == payment_paystack_geo_zone_id %} selected{% endif %}>{{ geo_zone.name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-status">{{ entry_status }}</label> 
+								<div class="col-sm-10">
+									<select name="payment_paystack_status" id="input-status" class="form-select">
+										{% if payment_paystack_status %}
+										<option value="1" selected="selected">{{ text_enabled }}</option>
+										<option value="0">{{ text_disabled }}</option>
+										{% else %}
+										<option value="1">{{ text_enabled }}</option>
+										<option value="0" selected="selected">{{ text_disabled }}</option>
+										{% endif %}
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab-status">
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-order-status">{{ entry_order_status }}</label> 
+								<div class="col-sm-10">
+									<select name="payment_paystack_order_status_id" id="input-order-status" class="form-select">
+										{% for order_status in order_statuses %}
+										{% if order_status.order_status_id == payment_paystack_order_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+										{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+										{% endif %}
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-pending-status">{{ entry_pending_status }}</label> 
+								<div class="col-sm-10">
+									<select name="payment_paystack_pending_status_id" id="input-pending-status" class="form-select">
+										{% for order_status in order_statuses %}
+										{% if order_status.order_status_id == payment_paystack_pending_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+										{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+										{% endif %}
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-canceled-status">{{ entry_canceled_status }}</label> 
+								<div class="col-sm-10">
+									<select name="payment_paystack_canceled_status_id" id="input-canceled-status" class="form-select">
+										{% for order_status in order_statuses %}
+										{% if order_status.order_status_id == payment_paystack_canceled_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+										{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+										{% endif %}
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="mb-3 row">
+								<label class="col-sm-2 col-form-label" for="input-failed-status">{{ entry_failed_status }}</label> 
+								<div class="col-sm-10">
+									<select name="payment_paystack_failed_status_id" id="input-failed-status" class="form-select">
+										{% for order_status in order_statuses %}
+										{% if order_status.order_status_id == payment_paystack_failed_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+										{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+										{% endif %}
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{{ footer }}
+
+

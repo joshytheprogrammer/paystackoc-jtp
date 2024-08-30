@@ -1,0 +1,78 @@
+{% if not livemode %}
+<div class="alert alert-danger">
+  <i class="fa-solid fa-circle-exclamation"></i> {{ text_testmode }} {{currency}}
+</div>
+{% endif %}
+
+<form>
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+  <div class="d-flex justify-content-end">
+    <input type="button" onclick="payWithPaystack()" value="{{ button_confirm }}" class="btn btn-primary" />
+  </div>
+</form>
+
+<script>
+  function payWithPaystack() {
+    var paystack = new PaystackPop();
+    paystack.newTransaction({
+      key: '{{ key }}',
+      currency: '{{ currency }}',
+      email: '{{ email }}',
+      amount: {{ amount }},
+      ref: '{{ ref }}',
+      metadata: {
+        custom_fields: []
+      },
+      onSuccess: function(response) {
+        window.location.href = '{{ callback }}'.replace(/&amp;/g, '&');
+      },
+      onCancel: function() {
+        window.location.href = '{{ callback }}'.replace(/&amp;/g, '&');
+      }
+    });
+  }
+</script>
+
+
+
+{# {% if not livemode %}
+ <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ text_testmode }}
+{% endif %}
+
+<form >
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <div class="buttons">
+    <div class="pull-right">
+      <input type="button"  onclick="payWithPaystack()" value="{{button_confirm}}" class="btn btn-primary" />
+    </div>
+  </div>
+</form>
+ 
+<script>
+  function payWithPaystack(){
+    var handler = PaystackPop.setup({
+      key: '{{key}}',
+      currency: '{{currency}}',
+      email: '{{email}}',
+      amount: {{amount}},
+      ref: '{{ref}}',
+      metadata:{
+         "custom_fields":[
+            {
+              "display_name":"Plugin",
+              "variable_name":"plugin",
+              "value":"opencart-3.x"
+            }
+          ]
+      },
+      callback: function(response){
+          window.location.href='{{callback}}'.replace('&amp;', '&').replace('&amp;', '&');
+      },
+      onClose: function(){
+          window.location.href='{{callback}}'.replace('&amp;', '&').replace('&amp;', '&');
+      }
+    });
+    console.log(handler);
+    handler.openIframe();
+  }
+</script> #}
